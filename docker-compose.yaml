@@ -1,0 +1,52 @@
+version: "3"
+services:
+  hub:
+    image: selenium/hub:latest
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome:latest
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+  firefox:
+    image: selenium/node-firefox:latest
+    shm_size: "512mb"
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+  search-module-chrome:
+    image: danielmicko/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - BROWSER=chrome
+      - HUB_HOST=hub
+      - MODULE=search-module.xml
+    volumes:
+      - ./test-result-search-chrm:/usr/share/dockerfiles/test-output
+  search-module-firefox:
+    image: danielmicko/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - BROWSER=firefox
+      - HUB_HOST=hub
+      - MODULE=search-module.xml
+    volumes:
+      - ./test-result-search-ffx:/usr/share/dockerfiles/test-output
+  bookflight-module:
+    image: danielmicko/selenium-docker
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+      - BROWSER=chrome
+      - HUB_HOST=hub
+      - MODULE=bookflight-module.xml
+    volumes:
+      - ./test-result-flight:/usr/share/dockerfiles/test-output
