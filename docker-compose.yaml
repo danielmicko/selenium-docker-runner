@@ -36,7 +36,7 @@ services:
       - HUB_HOST=hub
       - MODULE=search-module.xml
     volumes:
-      - ./test-result-search-ffx:/usr/share/dockerfiles/test-output
+      - ./output/test-result-search-ffx:/usr/share/dockerfiles/test-output
   bookflight-module:
     image: danielmicko/selenium-docker
     depends_on:
