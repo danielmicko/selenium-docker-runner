@@ -11,11 +11,11 @@ pipeline{
 				bat "docker-compose up search-module-chrome search-module-firefox bookflight-module"
 			}
 		}
-		stage("Grid Teardown"){
-			steps{
-				bat "docker-compose down"
-			}
+	}
+	post{
+		always{
+			archiveArtifacts artifacts: 'output/**'
+			bat "docker-compose down"
 		}
-
 	}
 }
